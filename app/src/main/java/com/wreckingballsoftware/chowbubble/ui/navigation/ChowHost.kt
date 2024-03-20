@@ -30,7 +30,7 @@ fun ChowHost() {
             GameplayScreen(navGraph = navGraph)
         }
 
-        composable(route = Destinations.ResultsScreen) { backstackEntry ->
+        composable(route = Destinations.ResultsScreen) {
             ResultsScreen(navGraph = navGraph)
         }
     }

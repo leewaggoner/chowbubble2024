@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.lifecycle.compose)
+    implementation(libs.androidx.datastore)
 
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)

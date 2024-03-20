@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,10 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun MenuScreen(navGraph: NavGraph, viewModel: MenuViewModel = getViewModel()) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.initAudioStatus()
+    }
+
     val navigation = viewModel.navigation.collectAsStateWithLifecycle(null)
     navigation.value?.let { nav ->
         when (nav) {
@@ -56,7 +61,7 @@ fun MenuScreenContent(
             horizontalAlignment = Alignment.End
         ) {
             AudioButton(audioOn = state.soundOn) {
-                handleEvent(MenuEvent.OnSoundToggle)
+                handleEvent(MenuEvent.OnAudioStatusChanged(!state.soundOn))
             }
         }
         Row(
