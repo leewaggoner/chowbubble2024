@@ -43,7 +43,7 @@ class MenuViewModel(
                 viewModelScope.launch {
                     dataStoreWrapper.putAudioStatus(event.audioStatus)
                 }
-                audioPlayer.setAudioStatus(event.audioStatus)
+                audioPlayer.audioOn = event.audioStatus
                 state = state.copy(soundOn = event.audioStatus)
             }
             MenuEvent.OnPlayGame -> {
