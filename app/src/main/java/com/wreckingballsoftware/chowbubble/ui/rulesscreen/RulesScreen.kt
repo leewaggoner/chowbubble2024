@@ -1,19 +1,18 @@
 package com.wreckingballsoftware.chowbubble.ui.rulesscreen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import com.wreckingballsoftware.chowbubble.ui.navigation.NavGraph
-import org.koin.androidx.compose.getViewModel
+import androidx.compose.ui.Modifier
+import com.wreckingballsoftware.chowbubble.ui.rulesscreen.compose.RulesBackground
 
 @Composable
-fun RulesScreen(navGraph: NavGraph, viewModel: RulesViewModel = getViewModel()) {
-    Column {
-        Text(text = "RulesScreen")
-        Button(onClick = { navGraph.navigateToGameplayScreen() }) {
-            Text(text = "Play")
-        }
+fun RulesScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        RulesBackground()
     }
 }
 

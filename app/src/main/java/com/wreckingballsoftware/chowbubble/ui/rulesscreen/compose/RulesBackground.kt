@@ -1,4 +1,4 @@
-package com.wreckingballsoftware.chowbubble.ui.menuscreen.compose
+package com.wreckingballsoftware.chowbubble.ui.rulesscreen.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.wreckingballsoftware.chowbubble.R
 
 @Composable
-fun MenuBackground() {
+fun RulesBackground() {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -24,15 +24,15 @@ fun MenuBackground() {
         )
         Image(
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.introscreen),
+            painter = painterResource(id = R.drawable.instructions_screen),
             contentScale = ContentScale.Inside,
             contentDescription = ""
         )
     }
 }
 
-@Preview(name = "MenuBackground Preview", showBackground = true)
+@Preview(name = "RulesBackground Preview", showBackground = true)
 @Composable
 fun RulesBackgroundPreview() {
-    MenuBackground()
+    RulesBackground()
 }

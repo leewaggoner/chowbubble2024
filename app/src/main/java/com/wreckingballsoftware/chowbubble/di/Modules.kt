@@ -13,7 +13,6 @@ import com.wreckingballsoftware.chowbubble.data.MusicPlayer
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.GameplayViewModel
 import com.wreckingballsoftware.chowbubble.ui.menuscreen.MenuViewModel
 import com.wreckingballsoftware.chowbubble.ui.resultsscreen.ResultsViewModel
-import com.wreckingballsoftware.chowbubble.ui.rulesscreen.RulesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,12 +28,6 @@ val appModule = module {
             handle = get(),
             audioPlayer = get(),
             dataStoreWrapper = get(),
-        )
-    }
-
-    viewModel {
-        RulesViewModel(
-            handle = get(),
         )
     }
 

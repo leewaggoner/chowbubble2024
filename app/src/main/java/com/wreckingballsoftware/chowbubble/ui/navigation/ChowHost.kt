@@ -23,7 +23,7 @@ fun ChowHost() {
         }
 
         composable(route = Destinations.RulesScreen) {
-            RulesScreen(navGraph = navGraph)
+            RulesScreen()
         }
 
         composable(route = Destinations.GameplayScreen) {
