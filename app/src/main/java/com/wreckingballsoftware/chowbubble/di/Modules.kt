@@ -10,6 +10,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.wreckingballsoftware.chowbubble.data.AudioPlayer
 import com.wreckingballsoftware.chowbubble.data.DataStoreWrapper
 import com.wreckingballsoftware.chowbubble.data.MusicPlayer
+import com.wreckingballsoftware.chowbubble.domain.Game
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.GameplayViewModel
 import com.wreckingballsoftware.chowbubble.ui.menuscreen.MenuViewModel
 import com.wreckingballsoftware.chowbubble.ui.resultsscreen.ResultsViewModel
@@ -34,6 +35,7 @@ val appModule = module {
     viewModel {
         GameplayViewModel(
             handle = get(),
+            game = get(),
         )
     }
 
@@ -41,6 +43,10 @@ val appModule = module {
         ResultsViewModel(
             handle = get(),
         )
+    }
+
+    single {
+        Game()
     }
 
     single {
