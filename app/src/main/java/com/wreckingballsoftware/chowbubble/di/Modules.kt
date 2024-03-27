@@ -12,6 +12,7 @@ import com.wreckingballsoftware.chowbubble.data.DataStoreWrapper
 import com.wreckingballsoftware.chowbubble.data.MusicPlayer
 import com.wreckingballsoftware.chowbubble.domain.Game
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.GameplayViewModel
+import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.statusbar.StatusBarViewModel
 import com.wreckingballsoftware.chowbubble.ui.menuscreen.MenuViewModel
 import com.wreckingballsoftware.chowbubble.ui.resultsscreen.ResultsViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +37,12 @@ val appModule = module {
         GameplayViewModel(
             handle = get(),
             game = get(),
+        )
+    }
+
+    viewModel {
+        StatusBarViewModel(
+            handle = get(),
         )
     }
 

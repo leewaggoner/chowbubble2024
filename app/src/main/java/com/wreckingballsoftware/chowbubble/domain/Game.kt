@@ -1,57 +1,68 @@
 package com.wreckingballsoftware.chowbubble.domain
 
+import androidx.compose.ui.unit.dp
+import com.wreckingballsoftware.chowbubble.domain.gamestates.GameState
+import com.wreckingballsoftware.chowbubble.domain.gamestates.GameStateStart
+import com.wreckingballsoftware.chowbubble.domain.gamestates.models.GameEvent
+import com.wreckingballsoftware.chowbubble.domain.gamestates.models.GameStateUpdate
 
-import android.os.SystemClock
 
 private const val ONE_SECOND_IN_NANOSECONDS = 1E9
-private const val ONE_SECOND_IN_MILLISECONDS = 1000L
-private const val TICKS_PER_SECOND = 34L
-private const val SKIP_TICKS = ONE_SECOND_IN_MILLISECONDS / TICKS_PER_SECOND
-private const val MAX_FRAMESKIP = 5
 
 class Game {
-    val gameObject = mutableListOf(GameObject())
-    private var fps = 0L
     private var lastTime = 0L
-    private var ticks = 0L
-    private var timeAtLastFPSCheck = 0L
-    private var nextGameTick = 0L
-    private var other = 0L
+    private var onGameEvent: ((GameEvent) -> Unit)? = null
+    private var onGameStateUpdate: ((GameStateUpdate) -> Unit)? = null
+    private var gameState: GameState? = null
+    var width = 0.dp
+    var height = 0.dp
+
+    init {
+        lastTime = System.nanoTime()
+    }
+
+    fun setOnGameplayEventCallback(onGameEvent: (GameEvent) -> Unit) {
+        this.onGameEvent = onGameEvent
+    }
+
+    fun setOnGameStateUpdateCallback(onGameStateUpdate: (GameStateUpdate) -> Unit) {
+        this.onGameStateUpdate = onGameStateUpdate
+    }
+
+    var playing: Boolean = false
+        private set
+//    val spriteObject = mutableListOf(LifeData())
+
+    fun startGame() {
+        playing = true
+        gameState = GameStateStart().apply {
+            setGameEventCallback { event ->
+                onGameEvent(event)
+            }
+            onStart()
+        }
+    }
 
     fun update(time: Long) {
-        //display raw fps
         val delta = time - lastTime
-        if (lastTime > 0L) {
-            fps = (ONE_SECOND_IN_NANOSECONDS / delta).toLong()
-        }
+        val renderDelta = (delta / ONE_SECOND_IN_NANOSECONDS).toFloat()
         lastTime = time
-        gameObject[0].updateRawFps(fps)
+        gameState?.onUpdate(time, false, 0f)
+//        spriteObject[0].update(renderDelta)
+    }
 
-        //-----------------------------------------------------------------------------------------
-
-        //limit frames to ~SKIP_TICKS frames per second
-        var loops = 0
-        var curMillis = SystemClock.elapsedRealtime()
-        while (curMillis > nextGameTick && loops < MAX_FRAMESKIP) {
-            // In a while loop in case the process falls behind the expected time of the next update
-            // then we can update the game state without rendering it. Also, the maximum number of
-            // frames that can be skipped is capped so the game can render at some point
-            gameObject[0].update()
-            ticks++
-            nextGameTick = curMillis + SKIP_TICKS
-            loops++
-            curMillis = SystemClock.elapsedRealtime()
+    private fun onGameEvent(event: GameEvent) {
+        when (event) {
+            GameEvent.OnGameStart -> {
+//                gameState = GameStatePlay()
+            }
+            is GameEvent.OnAddLife -> {
+                onGameStateUpdate?.let { it(GameStateUpdate.OnAddLife(event.index)) }
+            }
         }
+    }
 
-        val interpolation = (SystemClock.elapsedRealtime() + SKIP_TICKS - nextGameTick).toDouble() / SKIP_TICKS
-        //draw game object
-        gameObject[0].render(interpolation)
-
-        if (SystemClock.elapsedRealtime() - timeAtLastFPSCheck >= ONE_SECOND_IN_MILLISECONDS) {
-            gameObject[0].updateFps(ticks)
-            ticks = 0
-            other = 0
-            timeAtLastFPSCheck = SystemClock.elapsedRealtime()
-        }
+    fun endGame() {
+        playing = false
     }
 }
