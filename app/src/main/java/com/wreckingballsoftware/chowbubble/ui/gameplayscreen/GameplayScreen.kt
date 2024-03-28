@@ -13,9 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import com.wreckingballsoftware.chowbubble.domain.spritedata.FallingObjectData
+import com.wreckingballsoftware.chowbubble.domain.spritedata.LifeData
+import com.wreckingballsoftware.chowbubble.domain.spritedata.SpriteObject
+import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.compose.FallingObjectSprite
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.compose.GameplayBackground
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.models.GameplayEvent
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.models.GameplayState
+import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.statusbar.LifeSprite
 import com.wreckingballsoftware.chowbubble.ui.gameplayscreen.statusbar.StatusBar
 import com.wreckingballsoftware.chowbubble.ui.navigation.NavGraph
 import org.koin.androidx.compose.getViewModel
@@ -33,13 +38,15 @@ fun GameplayScreen(navGraph: NavGraph, viewModel: GameplayViewModel = getViewMod
 
     GameplayScreenContent(
         state = viewModel.state,
-        onEvent = viewModel::onEvent
+        spriteObjects = viewModel.spriteObjects,
+        onEvent = viewModel::onEvent,
     )
 }
 
 @Composable
 fun GameplayScreenContent(
     state: GameplayState,
+    spriteObjects: List<SpriteObject>,
     onEvent: (GameplayEvent) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -67,7 +74,12 @@ fun GameplayScreenContent(
                     .fillMaxSize(),
             ) {
                 GameplayBackground {
-                    //gameplay content
+                    spriteObjects.forEach { spriteObject ->
+                        when (spriteObject) {
+                            is FallingObjectData -> FallingObjectSprite(spriteObject)
+                            is LifeData -> { LifeSprite(lifeData = spriteObject) }
+                        }
+                    }
                 }
             }
             StatusBar(
@@ -84,6 +96,6 @@ fun GameplayScreenContent(
 fun GameplayScreenContentPreview() {
     GameplayScreenContent(
         state = GameplayState(),
-        onEvent = { },
-    )
+        spriteObjects = listOf(),
+    ) { }
 }

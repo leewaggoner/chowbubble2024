@@ -19,6 +19,8 @@ class GameplayViewModel(
         mutableStateOf(GameplayState())
     }
 
+    val spriteObjects = game.spriteObject
+
     init {
         game.setOnGameStateUpdateCallback { event ->
             onGameStateUpdate(event)
@@ -37,12 +39,7 @@ class GameplayViewModel(
     private fun onGameStateUpdate(event: GameStateUpdate) {
         when (event) {
             is GameStateUpdate.OnAddLife -> {
-                val ogLives = state.lives
-                val lives = listOf(
-                    ogLives[0].copy(full = ogLives[0].full, visible = ogLives[0].visible),
-                    ogLives[1].copy(full = ogLives[1].full, visible = ogLives[1].visible),
-                    ogLives[2].copy(full = ogLives[2].full, visible = ogLives[2].visible),
-                )
+                val lives = state.lives
                 lives[event.index].visible = true
                 state = state.copy(lives = lives)
             }

@@ -14,8 +14,8 @@ sealed class SpriteObject(
     position: Vector2 = Vector2.ZERO
 ) {
     abstract var size: Vector2
-    private var speed by mutableDoubleStateOf(speed)
-    private var angle by mutableStateOf(angle)
+    var speed by mutableDoubleStateOf(speed)
+    var angle by mutableStateOf(angle)
     var position by mutableStateOf(position)
     private val movementVector: Vector2
         get() = angle * speed

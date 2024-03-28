@@ -1,10 +1,15 @@
 package com.wreckingballsoftware.chowbubble.domain
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.unit.dp
+import com.wreckingballsoftware.chowbubble.R
 import com.wreckingballsoftware.chowbubble.domain.gamestates.GameState
 import com.wreckingballsoftware.chowbubble.domain.gamestates.GameStateStart
 import com.wreckingballsoftware.chowbubble.domain.gamestates.models.GameEvent
 import com.wreckingballsoftware.chowbubble.domain.gamestates.models.GameStateUpdate
+import com.wreckingballsoftware.chowbubble.domain.spritedata.FallingObjectData
+import com.wreckingballsoftware.chowbubble.domain.spritedata.SpriteObject
+import com.wreckingballsoftware.chowbubble.utils.Vector2
 
 
 private const val ONE_SECOND_IN_NANOSECONDS = 1E9
@@ -31,7 +36,7 @@ class Game {
 
     var playing: Boolean = false
         private set
-//    val spriteObject = mutableListOf(LifeData())
+    val spriteObject: List<SpriteObject> = mutableStateListOf(FallingObjectData().apply {spriteId = R.drawable.bubble_tea_green })
 
     fun startGame() {
         playing = true
@@ -48,7 +53,12 @@ class Game {
         val renderDelta = (delta / ONE_SECOND_IN_NANOSECONDS).toFloat()
         lastTime = time
         gameState?.onUpdate(time, false, 0f)
-//        spriteObject[0].update(renderDelta)
+        spriteObject.forEach {
+            it.update(renderDelta)
+            if (it.position.y > height.value) {
+                it.position = Vector2.ZERO
+            }
+        }
     }
 
     private fun onGameEvent(event: GameEvent) {
